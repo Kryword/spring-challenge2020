@@ -69,40 +69,39 @@ func (m Map) GetCell(position Position) Cell {
 
 func (m *Map) UpdatePac(newPac *Pac) {
 	found := false
+	var pacs []*Pac
 	if newPac.Mine {
-		for i := 0; i < len(m.MyPacs); i++ {
-			pac := m.MyPacs[i]
-			if pac.Id == newPac.Id {
-				// Update pac info
-				pac.Pos = newPac.Pos
-				pac.PacType = newPac.PacType
-				pac.SpeedTurns = newPac.SpeedTurns
-				pac.Cooldown = newPac.Cooldown
-				// Target and EnemyType is not updating here, because that is done in other place
-				found = true
-				break
-			}
-		}
-		if !found {
-			m.MyPacs = append(m.MyPacs, newPac)
-		}
+		pacs = m.MyPacs
 	} else {
-		// Update enemy pac
-		for i := 0; i < len(m.EnemyPacs); i++ {
-			pac := m.EnemyPacs[i]
-			if pac.Id == newPac.Id {
-				// Update pac info
-				pac.Pos = newPac.Pos
-				pac.PacType = newPac.PacType
-				pac.SpeedTurns = newPac.SpeedTurns
-				pac.Cooldown = newPac.Cooldown
-				// Target and EnemyType is not updating here, because that is done in other place
-				found = true
-				break
-			}
+		pacs = m.EnemyPacs
+	}
+	for i := 0; i < len(pacs); i++ {
+		pac := pacs[i]
+		if pac.Id == newPac.Id {
+			// Update previous pac and new pos cell to empty
+			m.UpdateCell(Cell{
+				Pos:  pac.Pos,
+				Type: Empty,
+			})
+			m.UpdateCell(Cell{
+				Pos:  newPac.Pos,
+				Type: Empty,
+			})
+			// Update pac info
+			pac.Pos = newPac.Pos
+			pac.PacType = newPac.PacType
+			pac.SpeedTurns = newPac.SpeedTurns
+			pac.Cooldown = newPac.Cooldown
+			// Target and EnemyType is not updating here, because that is done in other place
+			found = true
+			break
 		}
-		if !found {
-			m.EnemyPacs = append(m.EnemyPacs, newPac)
+	}
+	if !found {
+		if newPac.Mine {
+			m.MyPacs = append(pacs, newPac)
+		} else {
+			m.EnemyPacs = append(pacs, newPac)
 		}
 	}
 }
