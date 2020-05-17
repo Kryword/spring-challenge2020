@@ -84,6 +84,38 @@ func main() {
 		fmt.Fprintln(os.Stderr, gameMap.GridToStr())
 
 		// fmt.Fprintln(os.Stderr, "Debug messages...")
-		fmt.Println("MOVE 0 15 10") // MOVE <pacId> <x> <y>
+		for i := 0; i < len(gameMap.MyPacs); i++ {
+			pac := gameMap.MyPacs[i]
+
+			// Use speed everytime it is possible
+			if pac.Cooldown == 0 {
+				pac.CurrentMove = Speed
+				continue
+			}
+
+			cells := gameMap.GetCellsSortedByDist(&pac.Pos, SuperPellet, Pellet)
+			if len(cells) > 0 {
+				// Pick closest pellet and target it
+				pac.Target = cells[0].Pos
+				if pac.SpeedTurns > 0 {
+					// If speeding, pick a cell with 2 dist or more if possible
+					for j := 0; j < len(cells); j++ {
+						if cells[j].Pos.Dist(&pac.Pos) >= 2 {
+							pac.Target = cells[j].Pos
+						}
+					}
+				}
+				pac.CurrentMove = Move
+				continue
+			}
+		}
+
+		// Print output for every pac
+		outStr := ""
+		for i := 0; i < len(gameMap.MyPacs); i++ {
+			pac := gameMap.MyPacs[i]
+			outStr += pac.GetMove() + "|"
+		}
+		fmt.Println(outStr)
 	}
 }

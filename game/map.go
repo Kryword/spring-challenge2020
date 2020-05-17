@@ -109,16 +109,18 @@ func (m *Map) UpdatePac(newPac *Pac) {
 	}
 }
 
-func (m *Map) GetCellsSortedByDist(cellType CellType, position *Position) []Cell {
+func (m *Map) GetCellsSortedByDist(position *Position, cellTypes ...CellType) []Cell {
 	result := make([]Cell, 0, m.Width*m.Height)
 	for i := 0; i < len(m.Grid); i++ {
 		cell := m.Grid[i]
-		if cell.Type == cellType {
-			result = append(result, cell)
+		for _, cellType := range cellTypes {
+			if cell.Type == cellType {
+				result = append(result, cell)
+			}
 		}
 	}
 
-	sort.Slice(result, func(i, j int) bool {
+	sort.Slice(result[:], func(i, j int) bool {
 		return result[i].Pos.Dist(position) < result[j].Pos.Dist(position)
 	})
 	return result

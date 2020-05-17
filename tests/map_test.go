@@ -132,7 +132,7 @@ func TestCellsOrderedByDist(t *testing.T) {
 		X: 1,
 		Y: 1,
 	}
-	cells := gameMap.GetCellsSortedByDist(game.Empty, &posDist)
+	cells := gameMap.GetCellsSortedByDist(&posDist, game.Empty)
 
 	if cells[0].Pos.Dist(&posDist) >= cells[len(cells)-1].Pos.Dist(&posDist) {
 		t.Errorf("Fail ordering empty cells by dist, got: %d, want(lower than got): %d", cells[0].Pos.Dist(&posDist), cells[len(cells)-1].Pos.Dist(&posDist))
