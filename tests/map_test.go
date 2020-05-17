@@ -70,19 +70,19 @@ func TestUpdateSeveralCells(t *testing.T) {
 	width, height := 5, 3
 	gameMap := new(game.Map)
 	gameMap.Init(mapInput, width, height)
-	cells := [...]game.Cell{game.Cell{
+	cells := [...]game.Cell{{
 		Pos: game.Position{
 			X: 1,
 			Y: 0,
 		},
 		Type: game.Pellet,
-	}, game.Cell{
+	}, {
 		Pos: game.Position{
 			X: 3,
 			Y: 0,
 		},
 		Type: game.SuperPellet,
-	}, game.Cell{
+	}, {
 		Pos: game.Position{
 			X: 2,
 			Y: 1,
