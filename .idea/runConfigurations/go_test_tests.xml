@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="go test tests" type="GoTestRunConfiguration" factoryName="Go Test" singleton="false" nameIsGenerated="true" show_console_on_std_err="true" show_console_on_std_out="true">
+    <module name="go-solver" />
+    <working_directory value="$PROJECT_DIR$" />
+    <go_parameters value="-i" />
+    <framework value="gotest" />
+    <kind value="DIRECTORY" />
+    <directory value="$PROJECT_DIR$/tests" />
+    <filePath value="$PROJECT_DIR$" />
+    <method v="2" />
+  </configuration>
+</component>
