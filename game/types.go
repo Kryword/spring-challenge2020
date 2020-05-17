@@ -23,13 +23,30 @@ func (p PacType) GetWinningLosingType() (PacType, PacType) {
 		return Rock, Rock
 	}
 }
+func GetPacTypeFromStr(pacType string) PacType {
+	switch pacType {
+	case "ROCK":
+		return Rock
+	case "PAPER":
+		return Paper
+	case "SCISSORS":
+		return Scissors
+	// Never should it default
+	default:
+		return Rock
+	}
+}
 
-func (p PacType) ToStr() string{
+func (p PacType) ToStr() string {
 	switch p {
-	case Rock: return "ROCK"
-	case Paper: return "PAPER"
-	case Scissors: return "SCISSORS"
-	default: return ""
+	case Rock:
+		return "ROCK"
+	case Paper:
+		return "PAPER"
+	case Scissors:
+		return "SCISSORS"
+	default:
+		return ""
 	}
 }
 
@@ -39,7 +56,6 @@ const (
 	Switch
 )
 
-
 const (
 	Pellet CellType = iota
 	SuperPellet
@@ -48,7 +64,7 @@ const (
 	Unknown
 )
 
-func (c CellType) ToStr() string{
+func (c CellType) ToStr() string {
 	switch c {
 	case Pellet:
 		return "."

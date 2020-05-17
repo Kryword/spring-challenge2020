@@ -17,12 +17,14 @@ func main() {
 	var width, height int
 	scanner.Scan()
 	fmt.Sscan(scanner.Text(), &width, &height)
-
+	mapInput := ""
 	for i := 0; i < height; i++ {
 		scanner.Scan()
+		mapInput += scanner.Text() + "\n"
 		//row := scanner.Text() // one line of the grid: space " " is floor, pound "#" is wall
 	}
-
+	gameMap := new(Map)
+	gameMap.Init(mapInput, width, height)
 	for {
 		var myScore, opponentScore int
 		scanner.Scan()
@@ -49,19 +51,37 @@ func main() {
 			scanner.Scan()
 			fmt.Sscan(scanner.Text(), &pacId, &_mine, &x, &y, &typeId, &speedTurnsLeft, &abilityCooldown)
 			mine = _mine != 0
-			print(mine)
+			pac := new(Pac)
+			pac.Init(pacId, x, y, GetPacTypeFromStr(typeId), abilityCooldown, speedTurnsLeft, mine)
+			gameMap.UpdatePac(pac)
 		}
 		// visiblePelletCount: all pellets in sight
 		var visiblePelletCount int
 		scanner.Scan()
 		fmt.Sscan(scanner.Text(), &visiblePelletCount)
 
+		cells := make([]Cell, visiblePelletCount)
 		for i := 0; i < visiblePelletCount; i++ {
 			// value: amount of points this pellet is worth
 			var x, y, value int
 			scanner.Scan()
 			fmt.Sscan(scanner.Text(), &x, &y, &value)
+			cellType := Empty
+			if value == 1 {
+				cellType = Pellet
+			} else if value == 10 {
+				cellType = SuperPellet
+			}
+			cells[i] = Cell{
+				Pos: Position{
+					X: x,
+					Y: y,
+				},
+				Type: cellType,
+			}
+			gameMap.UpdateCell(cells[i])
 		}
+		fmt.Fprintln(os.Stderr, gameMap.GridToStr())
 
 		// fmt.Fprintln(os.Stderr, "Debug messages...")
 		fmt.Println("MOVE 0 15 10") // MOVE <pacId> <x> <y>
