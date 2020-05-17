@@ -119,3 +119,22 @@ func TestUpdateNewPac(t *testing.T) {
 		t.Errorf("Fail updating pac in map, got: %+v, want: %+v", resPac, pac)
 	}
 }
+
+func TestCellsOrderedByDist(t *testing.T) {
+	mapInput :=
+		"# #  \n" +
+			"#   #\n" +
+			"# # #\n"
+	width, height := 5, 3
+	gameMap := new(game.Map)
+	gameMap.Init(mapInput, width, height)
+	posDist := game.Position{
+		X: 1,
+		Y: 1,
+	}
+	cells := gameMap.GetCellsSortedByDist(game.Empty, &posDist)
+
+	if cells[0].Pos.Dist(&posDist) >= cells[len(cells)-1].Pos.Dist(&posDist) {
+		t.Errorf("Fail ordering empty cells by dist, got: %d, want(lower than got): %d", cells[0].Pos.Dist(&posDist), cells[len(cells)-1].Pos.Dist(&posDist))
+	}
+}

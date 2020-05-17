@@ -1,6 +1,9 @@
 package game
 
-import "strings"
+import (
+	"sort"
+	"strings"
+)
 
 type Cell struct {
 	Pos  Position
@@ -104,4 +107,19 @@ func (m *Map) UpdatePac(newPac *Pac) {
 			m.EnemyPacs = append(pacs, newPac)
 		}
 	}
+}
+
+func (m *Map) GetCellsSortedByDist(cellType CellType, position *Position) []Cell {
+	result := make([]Cell, 0, m.Width*m.Height)
+	for i := 0; i < len(m.Grid); i++ {
+		cell := m.Grid[i]
+		if cell.Type == cellType {
+			result = append(result, cell)
+		}
+	}
+
+	sort.Slice(result, func(i, j int) bool {
+		return result[i].Pos.Dist(position) < result[j].Pos.Dist(position)
+	})
+	return result
 }
