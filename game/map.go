@@ -6,8 +6,9 @@ import (
 )
 
 type Cell struct {
-	Pos  Position
-	Type CellType
+	Pos   Position
+	Type  CellType
+	Taken bool
 }
 
 type Map struct {
@@ -113,9 +114,11 @@ func (m *Map) GetCellsSortedByDist(position *Position, cellTypes ...CellType) []
 	result := make([]Cell, 0, m.Width*m.Height)
 	for i := 0; i < len(m.Grid); i++ {
 		cell := m.Grid[i]
-		for _, cellType := range cellTypes {
-			if cell.Type == cellType {
-				result = append(result, cell)
+		if !cell.Taken {
+			for _, cellType := range cellTypes {
+				if cell.Type == cellType {
+					result = append(result, cell)
+				}
 			}
 		}
 	}

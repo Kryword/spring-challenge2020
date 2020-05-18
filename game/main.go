@@ -106,6 +106,9 @@ func main() {
 					}
 				}
 				pac.CurrentMove = Move
+				cell := gameMap.GetCell(pac.Target)
+				cell.Taken = true
+				gameMap.UpdateCell(cell)
 				continue
 			}
 		}
