@@ -96,6 +96,8 @@ func (m *Map) UpdatePac(newPac *Pac) {
 			pac.PacType = newPac.PacType
 			pac.SpeedTurns = newPac.SpeedTurns
 			pac.Cooldown = newPac.Cooldown
+			//Pac is stuck in same position if updating pos is the same
+			pac.Stuck = pac.Pos == newPac.Pos
 			// Target and EnemyType is not updating here, because that is done in other place
 			found = true
 			break

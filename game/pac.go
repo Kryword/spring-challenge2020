@@ -14,6 +14,7 @@ type Pac struct {
 	Target      Position
 	EnemyType   PacType
 	CurrentMove PacMove
+	Stuck       bool
 }
 
 func (p *Pac) Init(id, x, y int, pacType PacType, cooldown, speedTurns int, mine bool) {

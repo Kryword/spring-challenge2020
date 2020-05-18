@@ -87,6 +87,12 @@ func main() {
 		for i := 0; i < len(gameMap.MyPacs); i++ {
 			pac := gameMap.MyPacs[i]
 
+			// Check if a target has been set and if it has been or not reached
+			if !pac.Stuck && (Position{}) != pac.Target && pac.CurrentMove == Move && pac.Pos != pac.Target {
+				// Position not reached yet, continue to same position
+				continue
+			}
+
 			// Use speed everytime it is possible
 			if pac.Cooldown == 0 {
 				pac.CurrentMove = Speed
